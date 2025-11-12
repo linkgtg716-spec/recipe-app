@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食谱应用 - Recipe App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="nav-back-btn" id="nav-back-btn" aria-label="返回">
+                <span class="nav-back-icon">←</span>
+            </button>
+            <div class="nav-logo"></div>
+            <div class="nav-actions">
+                <button class="nav-action-btn" id="nav-bookmark-btn" aria-label="收藏">
+                    <span class="nav-bookmark-icon">☆</span>
+                </button>
+                <button class="nav-action-btn" id="nav-more-btn" aria-label="更多">
+                    <span class="nav-more-icon">⋯</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="container">
+        <!-- 食谱标题和主图 -->
+        <section class="recipe-header">
+            <h2 id="recipe-title" class="recipe-title">加载中...</h2>
+            <p id="recipe-description" class="recipe-description"></p>
+            <div class="recipe-image-container">
+                <button class="image-nav-btn image-prev-btn" id="image-prev-btn" aria-label="上一张">
+                    <span>‹</span>
+                </button>
+                <img id="recipe-image" src="" alt="食谱图片" class="recipe-image">
+                <button class="image-nav-btn image-next-btn" id="image-next-btn" aria-label="下一张">
+                    <span>›</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 食材区块 -->
+        <section class="ingredients-section">
+            <h3 class="section-label">Ingredients</h3>
+            <ul id="ingredients-list" class="ingredients-list">
+                <!-- 动态插入 -->
+            </ul>
+        </section>
+
+        <!-- 步骤区块 -->
+        <section class="steps-section">
+            <h3 class="section-label">Steps</h3>
+            <div class="steps-wrapper">
+                <ol id="steps-list" class="steps-list">
+                    <!-- 动态插入 -->
+                </ol>
+            </div>
+        </section>
+
+        <!-- 步骤导航栏（固定定位，独立于内容流） -->
+        <aside id="stepNavigator" class="step-nav" aria-label="Step navigator">
+            <button id="navPrev" class="nav-arrow" aria-label="Previous step" title="Previous">▲</button>
+            <ul id="navDots" class="nav-dots" role="tablist" aria-orientation="vertical">
+                <!-- JS 动态插入 -->
+            </ul>
+            <button id="navNext" class="nav-arrow" aria-label="Next step" title="Next">▼</button>
+        </aside>
+
+    </main>
+
+    <!-- 底部操作栏 -->
+    <footer id="footerBar" class="footer">
+        <div class="footer-inner container">
+            <!-- 左：闹钟图标 -->
+            <button id="timerIconBtn" class="icon-btn small" aria-label="Timer" title="Timer">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </button>
+            <!-- 中：COOK 按钮 -->
+            <button id="cookBtn" class="btn primary large" aria-label="Start Cooking Mode">COOK!</button>
+            <!-- 右：聊天气泡 -->
+            <button id="chatBtn" class="icon-btn small" aria-label="Chat" title="Chat">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </button>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

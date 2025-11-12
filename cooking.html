@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烹饪模式 - Cooking Mode</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 烹饪模式特定样式 */
+        .cooking-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .cooking-header {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .cooking-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-step-container {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff9800 0%, #ff6b00 100%);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .current-step-text {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .timer-container {
+            background-color: #f8f8f8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ff9800;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .timer-btn {
+            background-color: #fff;
+            border: 2px solid #ff9800;
+            color: #ff9800;
+            border-radius: 8px;
+            padding: 0.6rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background-color: #ff9800;
+            color: #fff;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            border-color: #ff9800;
+            background-color: #fff8f0;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #ff9800 0%, #ff6b00 100%);
+            color: #fff;
+            border: none;
+        }
+
+        .nav-btn.primary:hover {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff9800 100%);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .back-btn {
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            border-color: #666;
+            background-color: #f5f5f5;
+        }
+
+        @media (max-width: 600px) {
+            .cooking-container {
+                padding: 1rem;
+            }
+
+            .current-step-text {
+                font-size: 1.1rem;
+            }
+
+            .timer-display {
+                font-size: 2.5rem;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-logo">🍳 烹饪模式</h1>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="cooking-container">
+        <button class="back-btn" onclick="window.location.href='index.html'">← 返回食谱</button>
+
+        <div class="cooking-header">
+            <h2 id="cooking-title" class="cooking-title">加载中...</h2>
+        </div>
+
+        <div class="current-step-container">
+            <div class="step-number" id="step-number">1</div>
+            <div class="current-step-text" id="current-step-text">准备开始...</div>
+            
+            <div class="timer-container" id="timer-container" style="display: none;">
+                <div class="timer-display" id="timer-display">00:00</div>
+                <div class="timer-controls">
+                    <button class="timer-btn" id="start-timer-btn">开始</button>
+                    <button class="timer-btn" id="pause-timer-btn" style="display: none;">暂停</button>
+                    <button class="timer-btn" id="reset-timer-btn">重置</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons">
+            <button class="nav-btn" id="prev-step-btn" disabled>上一步</button>
+            <button class="nav-btn primary" id="next-step-btn">下一步</button>
+        </div>
+    </main>
+
+    <script>
+        let currentRecipe = null;
+        let currentStepIndex = 0;
+        let timerInterval = null;
+        let timerSeconds = 0;
+        let isTimerRunning = false;
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecipe();
+            initNavigation();
+            initTimer();
+        });
+
+        // 从 localStorage 加载食谱
+        function loadRecipe() {
+            const savedRecipe = localStorage.getItem('currentRecipe');
+            if (savedRecipe) {
+                currentRecipe = JSON.parse(savedRecipe);
+                document.getElementById('cooking-title').textContent = currentRecipe.title;
+                showStep(0);
+            } else {
+                document.getElementById('cooking-title').textContent = '未找到食谱';
+                document.getElementById('current-step-text').textContent = '请先选择食谱';
+            }
+        }
+
+        // 显示当前步骤
+        function showStep(index) {
+            if (!currentRecipe || !currentRecipe.steps || index < 0 || index >= currentRecipe.steps.length) {
+                return;
+            }
+
+            currentStepIndex = index;
+            const step = currentRecipe.steps[index];
+            
+            document.getElementById('step-number').textContent = step.step;
+            document.getElementById('current-step-text').textContent = step.text;
+
+            // 显示/隐藏计时器
+            const timerContainer = document.getElementById('timer-container');
+            if (step.duration) {
+                timerContainer.style.display = 'block';
+                const durationMatch = step.duration.match(/(\d+)\s*min/);
+                if (durationMatch) {
+                    timerSeconds = parseInt(durationMatch[1]) * 60;
+                    updateTimerDisplay();
+                }
+            } else {
+                timerContainer.style.display = 'none';
+            }
+
+            // 更新导航按钮状态
+            document.getElementById('prev-step-btn').disabled = index === 0;
+            document.getElementById('next-step-btn').textContent = 
+                index === currentRecipe.steps.length - 1 ? '完成' : '下一步';
+        }
+
+        // 初始化导航
+        function initNavigation() {
+            document.getElementById('prev-step-btn').addEventListener('click', function() {
+                if (currentStepIndex > 0) {
+                    showStep(currentStepIndex - 1);
+                }
+            });
+
+            document.getElementById('next-step-btn').addEventListener('click', function() {
+                if (currentStepIndex < currentRecipe.steps.length - 1) {
+                    showStep(currentStepIndex + 1);
+                } else {
+                    // 完成所有步骤
+                    alert('恭喜！您已完成所有步骤！🎉');
+                    window.location.href = 'index.html';
+                }
+            });
+        }
+
+        // 初始化计时器
+        function initTimer() {
+            const startBtn = document.getElementById('start-timer-btn');
+            const pauseBtn = document.getElementById('pause-timer-btn');
+            const resetBtn = document.getElementById('reset-timer-btn');
+
+            startBtn.addEventListener('click', function() {
+                if (!isTimerRunning) {
+                    isTimerRunning = true;
+                    startBtn.style.display = 'none';
+                    pauseBtn.style.display = 'inline-block';
+                    
+                    timerInterval = setInterval(function() {
+                        if (timerSeconds > 0) {
+                            timerSeconds--;
+                            updateTimerDisplay();
+                            
+                            // 时间到
+                            if (timerSeconds === 0) {
+                                clearInterval(timerInterval);
+                                isTimerRunning = false;
+                                startBtn.style.display = 'inline-block';
+                                pauseBtn.style.display = 'none';
+                                alert('⏰ 时间到！');
+                            }
+                        }
+                    }, 1000);
+                }
+            });
+
+            pauseBtn.addEventListener('click', function() {
+                if (isTimerRunning) {
+                    clearInterval(timerInterval);
+                    isTimerRunning = false;
+                    startBtn.style.display = 'inline-block';
+                    pauseBtn.style.display = 'none';
+                }
+            });
+
+            resetBtn.addEventListener('click', function() {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                startBtn.style.display = 'inline-block';
+                pauseBtn.style.display = 'none';
+                
+                // 重新获取当前步骤的时长
+                const step = currentRecipe.steps[currentStepIndex];
+                if (step.duration) {
+                    const durationMatch = step.duration.match(/(\d+)\s*min/);
+                    if (durationMatch) {
+                        timerSeconds = parseInt(durationMatch[1]) * 60;
+                        updateTimerDisplay();
+                    }
+                }
+            });
+        }
+
+        // 更新计时器显示
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('timer-display').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
+
