@@ -40,23 +40,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 动态更新底部栏高度
 function updateFooterHeight() {
-    window.addEventListener('load', function() {
+    const updateHeight = function() {
         const footer = document.querySelector('.footer');
         if (footer) {
-            const height = footer.getBoundingClientRect().height;
-            document.documentElement.style.setProperty('--footer-h', `${Math.ceil(height)}px`);
+            const height = Math.ceil(footer.getBoundingClientRect().height);
+            document.documentElement.style.setProperty('--footer-h', `${height}px`);
         }
-    });
+    };
+    
+    // 页面加载完成后更新
+    window.addEventListener('load', updateHeight);
     
     // 立即执行一次（如果 footer 已渲染）
-    const footer = document.querySelector('.footer');
-    if (footer) {
-        // 使用 requestAnimationFrame 确保 DOM 已渲染
-        requestAnimationFrame(function() {
-            const height = footer.getBoundingClientRect().height;
-            document.documentElement.style.setProperty('--footer-h', `${Math.ceil(height)}px`);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            requestAnimationFrame(updateHeight);
         });
+    } else {
+        requestAnimationFrame(updateHeight);
     }
+    
+    // 监听窗口大小变化（处理旋转等情况）
+    window.addEventListener('resize', function() {
+        requestAnimationFrame(updateHeight);
+    });
 }
 
 // 加载食谱内容

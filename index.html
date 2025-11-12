@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>食谱应用 - Recipe App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -59,19 +59,18 @@
                 </ol>
             </div>
         </section>
-
-        <!-- 步骤导航栏（固定定位，独立于内容流） -->
-        <aside id="stepNavigator" class="step-nav" aria-label="Step navigator">
-            <button id="navPrev" class="nav-arrow" aria-label="Previous step" title="Previous">▲</button>
-            <ul id="navDots" class="nav-dots" role="tablist" aria-orientation="vertical">
-                <!-- JS 动态插入 -->
-            </ul>
-            <button id="navNext" class="nav-arrow" aria-label="Next step" title="Next">▼</button>
-        </aside>
-
     </main>
 
-    <!-- 底部操作栏 -->
+    <!-- 步骤导航栏（固定定位，独立于内容流，body 的直接子元素） -->
+    <aside id="stepNavigator" class="step-nav" aria-label="Step navigator">
+        <button id="navPrev" class="nav-arrow" aria-label="Previous step" title="Previous">▲</button>
+        <ul id="navDots" class="nav-dots" role="tablist" aria-orientation="vertical">
+            <!-- JS 动态插入 -->
+        </ul>
+        <button id="navNext" class="nav-arrow" aria-label="Next step" title="Next">▼</button>
+    </aside>
+
+    <!-- 底部操作栏（固定定位，body 的直接子元素） -->
     <footer id="footerBar" class="footer">
         <div class="footer-inner container">
             <!-- 左：闹钟图标 -->
