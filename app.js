@@ -35,7 +35,29 @@ document.addEventListener('DOMContentLoaded', function() {
     initCookButton();
     initMoreMenu();
     initStepNavigator();
+    updateFooterHeight();
 });
+
+// 动态更新底部栏高度
+function updateFooterHeight() {
+    window.addEventListener('load', function() {
+        const footer = document.querySelector('.footer');
+        if (footer) {
+            const height = footer.getBoundingClientRect().height;
+            document.documentElement.style.setProperty('--footer-h', `${Math.ceil(height)}px`);
+        }
+    });
+    
+    // 立即执行一次（如果 footer 已渲染）
+    const footer = document.querySelector('.footer');
+    if (footer) {
+        // 使用 requestAnimationFrame 确保 DOM 已渲染
+        requestAnimationFrame(function() {
+            const height = footer.getBoundingClientRect().height;
+            document.documentElement.style.setProperty('--footer-h', `${Math.ceil(height)}px`);
+        });
+    }
+}
 
 // 加载食谱内容
 function loadRecipe() {
