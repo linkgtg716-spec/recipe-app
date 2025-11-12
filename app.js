@@ -38,32 +38,37 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFooterHeight();
 });
 
-// 动态更新底部栏高度
+// 动态更新底部栏高度 - Safari 修复
 function updateFooterHeight() {
-    const updateHeight = function() {
+    const setFooterH = function() {
         const footer = document.querySelector('.footer');
-        if (footer) {
-            const height = Math.ceil(footer.getBoundingClientRect().height);
-            document.documentElement.style.setProperty('--footer-h', `${height}px`);
-        }
+        if (!footer) return;
+        const height = Math.ceil(footer.getBoundingClientRect().height);
+        document.documentElement.style.setProperty('--footer-h', height + 'px');
     };
     
     // 页面加载完成后更新
-    window.addEventListener('load', updateHeight);
+    window.addEventListener('load', setFooterH);
     
     // 立即执行一次（如果 footer 已渲染）
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            requestAnimationFrame(updateHeight);
+            requestAnimationFrame(setFooterH);
         });
     } else {
-        requestAnimationFrame(updateHeight);
+        requestAnimationFrame(setFooterH);
     }
     
     // 监听窗口大小变化（处理旋转等情况）
     window.addEventListener('resize', function() {
-        requestAnimationFrame(updateHeight);
+        requestAnimationFrame(setFooterH);
     });
+    
+    // Safari 关键修复：监听 visualViewport 变化（地址栏显示/隐藏）
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', setFooterH);
+        window.visualViewport.addEventListener('scroll', setFooterH);
+    }
 }
 
 // 加载食谱内容

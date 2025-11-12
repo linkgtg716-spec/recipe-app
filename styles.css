@@ -16,12 +16,14 @@ html, body {
     overflow-x: hidden;
 }
 
-/* 去除影响 fixed 的祖先属性 */
-html, body, main, .container, #app, #content, .page-root {
+/* 去除影响 fixed 的祖先属性 - Safari 关键修复 */
+html, body, main, .container, #app, #content, .page-root, .steps-section, .steps-wrapper {
     transform: none !important;
     filter: none !important;
     perspective: none !important;
     will-change: auto !important;
+    overflow: visible !important;
+    -webkit-overflow-scrolling: auto !important;
 }
 
 body {
@@ -299,12 +301,11 @@ main {
     box-shadow: 0 4px 16px rgba(255, 152, 0, 0.2);
 }
 
-/* 步骤导航栏 - 所有断点都固定在右侧中部 */
+/* 步骤导航栏 - 所有断点都固定在右侧中部 - Safari 修复 */
 .step-nav {
     position: fixed;
-    top: 50%;
+    top: 50svh; /* 使用 svh 适配 Safari 动态视口 */
     right: max(12px, env(safe-area-inset-right));
-    transform: translateY(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -317,6 +318,11 @@ main {
     z-index: 900; /* 低于 footer，避免覆盖 */
     width: auto;
     min-width: 48px;
+    /* Safari fixed 定位修复 */
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .nav-arrow {
@@ -569,7 +575,7 @@ main {
     }
 }
 
-/* 底部操作栏 - 始终固定在最底，考虑 iOS 安全区 */
+/* 底部操作栏 - 始终固定在最底，考虑 iOS 安全区 - Safari 修复 */
 .footer {
     position: fixed;
     left: 0;
@@ -580,6 +586,11 @@ main {
     border-top: 1px solid #e7e9ec;
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
     z-index: 1000; /* 高于右侧导航 */
+    /* Safari fixed 定位修复 */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
 }
 
 .footer-inner {
@@ -688,13 +699,14 @@ main {
         min-width: 0;
     }
 
-    /* 移动端：导航栏保持在右侧中部 */
+    /* 移动端：导航栏保持在右侧中部 - Safari 修复 */
     .step-nav {
         right: max(10px, env(safe-area-inset-right));
-        top: 50%;
+        top: 50svh; /* 使用 svh 适配 Safari 动态视口 */
         bottom: auto;
         left: auto;
         transform: translateY(-50%); /* 移动端也保持右侧居中，不改为底部 */
+        -webkit-transform: translateY(-50%);
         flex-direction: column; /* 竖排 */
     }
 
